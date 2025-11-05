@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export interface Post {
+export interface Todo {
   id: number;
   title: string;
   completed: boolean;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const fetchTodos = async ({ page, pageSize }: Props) => {
-  const res = await axios.get<Post[]>(
+  const res = await axios.get<Todo[]>(
     "https://jsonplaceholder.typicode.com/todos",
     {
       params: {
@@ -26,9 +26,9 @@ const fetchTodos = async ({ page, pageSize }: Props) => {
 };
 
 export const useTodos = (page: number, pageSize: number) => {
-  return useQuery<Post[]>({
+  return useQuery<Todo[]>({
     queryKey: ["todos", page, pageSize],
     queryFn: () => fetchTodos({ page, pageSize }),
-    staleTime: 1000 * 60, 
+    staleTime: 1000 * 60,
   });
 };

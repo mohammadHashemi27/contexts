@@ -39,6 +39,46 @@ export const Todo = () => {
 
   return (
     <>
+      <Box
+        maxW={{ base: "90%", sm: "md", md: "lg" }}
+        mx="auto"
+        mt={5}
+        p={{ base: 2, sm: 4 }}
+        bg="blue.50"
+        borderRadius="2xl"
+        boxShadow="md"
+      >
+        <List.Root gap={3}>
+          {todos?.slice(0, 6).map((todo) => (
+            <ListItem
+              key={todo.id}
+              display="flex"
+              alignItems="center"
+              gap={3}
+              fontSize={{ base: "sm", md: "md", lg: "lg" }}
+              px={3}
+              py={2}
+              borderRadius="xl"
+              transition="all 0.2s ease-in-out"
+              cursor="pointer"
+              _hover={{
+                bg: "blue.100",
+                transform: "scale(1.02)",
+                color: "teal.500",
+              }}
+              onClick={() => setSelectedId(todo.id)}
+            >
+              <Icon
+                as={selectedId === todo.id ? LuCircleCheck : LuCircleDashed}
+                color={selectedId === todo.id ? "green.400" : "gray.400"}
+                boxSize={{ base: 5, md: 6 }}
+                flexShrink={0}
+              />
+              {todo.title}
+            </ListItem>
+          ))}
+        </List.Root>
+      </Box>
       <Box textAlign="center" mt={6}>
         <Pagination.Root
           count={100}
@@ -68,47 +108,6 @@ export const Todo = () => {
             </Pagination.NextTrigger>
           </ButtonGroup>
         </Pagination.Root>
-      </Box>
-
-      <Box
-        maxW={{ base: "90%", sm: "md", md: "lg" }}
-        mx="auto"
-        mt={5}
-        p={{ base: 2, sm: 4 }}
-        bg="blue.50"
-        borderRadius="2xl"
-        boxShadow="md"
-      >
-        <List.Root gap={3}>
-          {todos?.map((todo) => (
-            <ListItem
-              key={todo.id}
-              display="flex"
-              alignItems="center"
-              gap={3}
-              fontSize={{ base: "sm", md: "md", lg: "lg" }}
-              px={3}
-              py={2}
-              borderRadius="xl"
-              transition="all 0.2s ease-in-out"
-              cursor="pointer"
-              _hover={{
-                bg: "blue.100",
-                transform: "scale(1.02)",
-                color: "teal.500",
-              }}
-              onClick={() => setSelectedId(todo.id)}
-            >
-              <Icon
-                as={selectedId === todo.id ? LuCircleCheck : LuCircleDashed}
-                color={selectedId === todo.id ? "green.400" : "gray.400"}
-                boxSize={{ base: 5, md: 6 }}
-                flexShrink={0}
-              />
-              {todo.title}
-            </ListItem>
-          ))}
-        </List.Root>
       </Box>
     </>
   );
