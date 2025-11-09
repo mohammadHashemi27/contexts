@@ -1,30 +1,12 @@
-import { Button, HStack, Input } from "@chakra-ui/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRef } from "react";
 import type { Todo } from "../react-query/UseTodos";
-import axios from "axios";
+import { Input, Button, HStack } from "@chakra-ui/react";
+import { useRef } from "react";
+import useForm from "../react-query/useForm";
 
 export const TodoForm = () => {
-  const queryClient = useQueryClient();
   const ref = useRef<HTMLInputElement>(null);
-
-  const addTodo = useMutation({
-    mutationFn: (todo: Todo) =>
-      axios
-        .post<Todo>("https://jsonplaceholder.typicode.com/todos", todo)
-        .then((res) => res.data),
-
-    onSuccess: (data) => {
-      queryClient.setQueryData<Todo[]>(["todo"], (oldTodos) => [
-        data,
-        ...(oldTodos || []),
-      ]);
-    },
-
-    onError: (data) => {
-      console.log(data);
-    },
-  });
+  // hook
+  const addTodo = useForm();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -44,13 +26,19 @@ export const TodoForm = () => {
 
   return (
     <>
-      {addTodo.error && (
+      {addTodo.isError && (
         <div className="alert alert-danger">{addTodo.error.message}</div>
       )}
       <form onSubmit={handleSubmit}>
-        <HStack gap={3}>
-          <Input ref={ref} placeholder="Add Todo" flex="1" />
-          <Button type="submit" variant={"surface"} borderRadius={6} colorPalette="blue">
+        <HStack gap={3} justifyContent={"center"}>
+          <Input ref={ref} placeholder="Add Todo" width={400} />
+          <Button
+            type="submit"
+            colorPalette="blue"
+            loading={addTodo.isPending}
+            borderRadius={5}
+            disabled={addTodo.isPending}
+          >
             Add
           </Button>
         </HStack>

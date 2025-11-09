@@ -1,32 +1,31 @@
-import { useTodos } from "../react-query/UseTodos";
+// 📁 src/components/Users.tsx
+import { useState } from "react";
+import { useUsers } from "../react-query/UseTodos";
 import {
+  Box,
+  Text,
+  Spinner,
   Icon,
   List,
   ListItem,
-  Text,
-  Spinner,
-  Box,
-  Pagination,
-  ButtonGroup,
   IconButton,
+  ButtonGroup,
+  Pagination,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { LuCircleCheck, LuCircleDashed } from "react-icons/lu";
 
-export const Todo = () => {
-  const pageSize = 10;
+export const Users = () => {
+  const pageSize = 5;
   const [page, setPage] = useState(1);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const { data: todos, isPending, isError } = useTodos(page, pageSize);
+
+  const { data: users, isPending, isError } = useUsers(page, pageSize);
 
   if (isPending)
     return (
       <Text textAlign="center" mt={5}>
-        <Spinner
-          color="blue.500"
-          css={{ "--spinner-track-color": "colors.gray.200" }}
-        />
+        <Spinner color="blue.500" />
       </Text>
     );
 
@@ -49,9 +48,9 @@ export const Todo = () => {
         boxShadow="md"
       >
         <List.Root gap={3}>
-          {todos?.slice(0, 6).map((todo) => (
+          {users?.map((user) => (
             <ListItem
-              key={todo.id}
+              key={user.id}
               display="flex"
               alignItems="center"
               gap={3}
@@ -66,22 +65,28 @@ export const Todo = () => {
                 transform: "scale(1.02)",
                 color: "teal.500",
               }}
-              onClick={() => setSelectedId(todo.id)}
+              onClick={() => setSelectedId(user.id)}
             >
               <Icon
-                as={selectedId === todo.id ? LuCircleCheck : LuCircleDashed}
-                color={selectedId === todo.id ? "green.400" : "gray.400"}
+                as={selectedId === user.id ? LuCircleCheck : LuCircleDashed}
+                color={selectedId === user.id ? "green.400" : "gray.400"}
                 boxSize={{ base: 5, md: 6 }}
                 flexShrink={0}
               />
-              {todo.title}
+              <Text>
+                {user.name.firstname} {user.name.lastname} —{" "}
+                <Text as="span" color="gray.500">
+                  @{user.username}
+                </Text>
+              </Text>
             </ListItem>
           ))}
         </List.Root>
       </Box>
+
       <Box textAlign="center" mt={6}>
         <Pagination.Root
-          count={100}
+          count={60} 
           page={page}
           onPageChange={(e) => setPage(e.page)}
         >
@@ -101,6 +106,7 @@ export const Todo = () => {
             <Pagination.NextTrigger asChild>
               <IconButton
                 aria-label="Next Page"
+                disabled={users?.length < pageSize}
                 onClick={() => setPage((p) => p + 1)}
               >
                 <HiChevronRight />
