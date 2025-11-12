@@ -12,7 +12,7 @@ export const Login = () => {
           fontFamily={"initial"}
           fontSize={"1.3em"}
           justifyContent={"center"}
-          status="success"
+          status="neutral"
           variant="subtle"
         >
           {user}خوش آمدید
@@ -20,7 +20,7 @@ export const Login = () => {
         </Alert.Root>
         <Button
           variant={"outline"}
-          colorPalette={"red"}
+          colorPalette={"gray"}
           borderRadius={6}
           onClick={() => dispatch({ type: "LOGOUT" })}
           mt={5}
@@ -33,7 +33,7 @@ export const Login = () => {
   return (
     <Button
       variant={"outline"}
-      colorPalette={"green"}
+      colorPalette={"gray"}
       borderRadius={6}
       onClick={() => dispatch({ type: "LOGIN", userName: ":)" })}
     >
