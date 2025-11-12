@@ -5,6 +5,7 @@ import TaskContext from "./globalStateManagement/context/taskContext";
 import { NavBar } from "./globalStateManagement/reducer/NavBar";
 import { AddTaskList } from "./globalStateManagement/addTask";
 import { TaskLists } from "./globalStateManagement/reducer/Task";
+import { Login } from "./globalStateManagement/reducer/login";
 
 function App() {
   const [tasks, dispatch] = useReducer(TaskLists, []);
@@ -26,6 +27,7 @@ function App() {
           borderRadius="xl"
           boxShadow="md"
         >
+          <Login />
           <VStack gap={6}>
             <NavBar />
             <AddTaskList />

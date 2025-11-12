@@ -15,7 +15,7 @@ export const Login = () => {
           status="success"
           variant="subtle"
         >
-          خوش آمدید {user}
+          {user}خوش آمدید
           <Alert.Indicator />
         </Alert.Root>
         <Button
@@ -35,7 +35,7 @@ export const Login = () => {
       variant={"outline"}
       colorPalette={"green"}
       borderRadius={6}
-      onClick={() => dispatch({ type: "LOGIN", userName: "محمد" })}
+      onClick={() => dispatch({ type: "LOGIN", userName: ":)" })}
     >
       ورود
     </Button>

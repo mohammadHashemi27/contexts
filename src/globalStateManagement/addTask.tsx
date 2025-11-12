@@ -47,6 +47,9 @@ export const AddTaskList = () => {
           >
             <span className="flex-grow-1">{task.title}</span>
             <Button
+            ml={'2'}
+              size={{ base: "xs", sm: "sm" }}
+              px={2}
               className="btn btn-outline-danger"
               onClick={() => dispatch({ type: "DELETE", taskId: task.id })}
             >
