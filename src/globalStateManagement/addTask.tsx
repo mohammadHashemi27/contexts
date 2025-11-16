@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 import { GrPowerReset } from "react-icons/gr";
 import { IoMdAdd } from "react-icons/io";
-import TaskContext from "./context/taskContext";
+import { TaskContext } from "./context/taskContext";
 
 export const AddTaskList = () => {
   const { tasks, dispatch } = useContext(TaskContext);

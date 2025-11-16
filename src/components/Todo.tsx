@@ -1,6 +1,6 @@
 // 📁 src/components/Users.tsx
 import { useState } from "react";
-import { useUsers } from "../react-query/UseTodos";
+import { useTodos } from "../react-query/UseTodos";
 import {
   Box,
   Text,
@@ -12,15 +12,16 @@ import {
   ButtonGroup,
   Pagination,
 } from "@chakra-ui/react";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+
 import { LuCircleCheck, LuCircleDashed } from "react-icons/lu";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 export const Users = () => {
-  const pageSize = 5;
   const [page, setPage] = useState(1);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const pageSize = 8;
 
-  const { data: users, isPending, isError } = useUsers(page, pageSize);
+  const { data: todos, isPending, isError } = useTodos(page, pageSize);
 
   if (isPending)
     return (
@@ -48,7 +49,7 @@ export const Users = () => {
         boxShadow="md"
       >
         <List.Root gap={3}>
-          {users?.slice(0, 8).map((user) => (
+          {todos?.slice(0,5).map((user) => (
             <ListItem
               key={user.id}
               display="flex"
@@ -73,42 +74,26 @@ export const Users = () => {
                 boxSize={{ base: 5, md: 6 }}
                 flexShrink={0}
               />
-              <Text>
-                {user.name.firstname} {user.name.lastname} —{" "}
-                <Text as="span" color="gray.500">
-                  @{user.username}
-                </Text>
-              </Text>
+              <Text>{user.title}</Text>
             </ListItem>
           ))}
         </List.Root>
       </Box>
 
       <Box textAlign="center" mt={6}>
-        <Pagination.Root
-          count={60}
-          page={page}
-          onPageChange={(e) => setPage(e.page)}
-        >
+        <Pagination.Root count={50} pageSize={2} defaultPage={page}>
           <ButtonGroup gap="4" size="sm" variant="ghost">
             <Pagination.PrevTrigger asChild>
               <IconButton
-                aria-label="Previous Page"
+                onClick={() => setPage(page - 1)}
                 disabled={page === 1}
-                onClick={() => setPage((p) => Math.max(p - 1))}
               >
                 <HiChevronLeft />
               </IconButton>
             </Pagination.PrevTrigger>
-
-            <Pagination.PageText>Page {page}</Pagination.PageText>
-
+            <Pagination.PageText />
             <Pagination.NextTrigger asChild>
-              <IconButton
-                aria-label="Next Page"
-                disabled={page === 6}
-                onClick={() => setPage((p) => p + 1)}
-              >
+              <IconButton onClick={() => setPage(page + 1)}>
                 <HiChevronRight />
               </IconButton>
             </Pagination.NextTrigger>

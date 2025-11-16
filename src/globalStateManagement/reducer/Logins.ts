@@ -6,9 +6,7 @@ interface LogOutAction {
   type: "LOGOUT";
 }
 
-type AuthActions = LogOutAction | LoginAction;
-
-
+export type AuthActions = LogOutAction | LoginAction;
 
 export const ActionsLogins = (_state: string, actions: AuthActions): string => {
   switch (actions.type) {

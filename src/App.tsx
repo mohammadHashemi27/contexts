@@ -1,23 +1,25 @@
 import { useReducer } from "react";
 import "./App.css";
+import { TaskContext } from "./globalStateManagement/context/taskContext";
 import { TaskLists } from "./globalStateManagement/reducer/Task";
-import { AddTaskList } from "./globalStateManagement/addTask";
 import { NavBar } from "./globalStateManagement/reducer/NavBar";
-import TaskContext from "./globalStateManagement/context/taskContext";
+import { AddTaskList } from "./globalStateManagement/addTask";
+import { ActionsLogins } from "./globalStateManagement/reducer/Logins";
+import AuthContext from "./globalStateManagement/context/AuthContext";
 import { Login } from "./globalStateManagement/reducer/login";
-import { Box } from "@chakra-ui/react";
 
 function App() {
-  const [tasks, dispatch] = useReducer(TaskLists, []);
+  const [tasks, TaskDispatch] = useReducer(TaskLists, []);
+  const [user, AuthDispatch] = useReducer(ActionsLogins, "");
   return (
     <>
-      <Box fontSize={{ base: "10px", md: "18px", lg: "20px" }}>
-        <Login />
-        <TaskContext.Provider value={{ tasks, dispatch }}>
+      <AuthContext.Provider value={{ user, dispatch: AuthDispatch }}>
+        <TaskContext.Provider value={{ tasks, dispatch: TaskDispatch }}>
+          <Login/>
           <NavBar />
           <AddTaskList />
         </TaskContext.Provider>
-      </Box>
+      </AuthContext.Provider>
     </>
   );
 }

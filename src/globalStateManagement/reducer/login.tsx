@@ -1,10 +1,9 @@
-import { useReducer } from "react";
-import { ActionsLogins } from "./Logins";
 import { Alert, Button } from "@chakra-ui/react";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 export const Login = () => {
-  const [user, dispatch] = useReducer(ActionsLogins, "");
-
+  const { user, dispatch } = useContext(AuthContext);
   if (user)
     return (
       <>
@@ -15,7 +14,7 @@ export const Login = () => {
           status="neutral"
           variant="subtle"
         >
-          {user}خوش آمدید
+          {user}
           <Alert.Indicator />
         </Alert.Root>
         <Button
@@ -35,7 +34,7 @@ export const Login = () => {
       variant={"outline"}
       colorPalette={"gray"}
       borderRadius={6}
-      onClick={() => dispatch({ type: "LOGIN", userName: ":)" })}
+      onClick={() => dispatch({ type: "LOGIN", userName: "mohammadHashemi" })}
     >
       ورود
     </Button>

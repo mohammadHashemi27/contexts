@@ -1,5 +1,5 @@
 import type { Dispatch } from "react";
-import { type ActionTask, type Task } from "../reducer/Task";
+import type { ActionTask, Task } from "../reducer/Task";
 import React from "react";
 
 interface TaskContextType {
@@ -7,8 +7,7 @@ interface TaskContextType {
   dispatch: Dispatch<ActionTask>;
 }
 
-const TaskContext = React.createContext<TaskContextType>({
+export const TaskContext = React.createContext<TaskContextType>({
   tasks: [],
   dispatch: () => {},
 });
-export default TaskContext;

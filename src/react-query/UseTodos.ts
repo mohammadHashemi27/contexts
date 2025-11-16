@@ -1,24 +1,35 @@
-// 📁 src/react-query/UseTodos.ts
-export interface Todo {
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-// مثال fetchTodos یا useTodos hook شما می‌تواند اینجا باشد:
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const fetchTodos = async (): Promise<Todo[]> => {
+export interface Todo {
+  id: number;
+  title: string;
+}
+
+interface Pages {
+  page: number;
+  pageSize: number;
+}
+
+export const fetchTodos = async ({
+  page,
+  pageSize,
+}: Pages): Promise<Todo[]> => {
   const { data } = await axios.get(
-    "https://jsonplaceholder.typicode.com/todos?_limit=10"
+    "https://jsonplaceholder.typicode.com/todos",
+    {
+      params: {
+        _start: (page - 1) * pageSize,
+        _limit: pageSize,
+      },
+    }
   );
   return data;
 };
 
-export const useTodos = () => {
+export const useTodos = (page: number, pageSize: number) => {
   return useQuery<Todo[]>({
-    queryKey: ["todos"],
-    queryFn: fetchTodos,
+    queryKey: ["todos", page, pageSize],
+    queryFn: () => fetchTodos({ page, pageSize }),
   });
 };
