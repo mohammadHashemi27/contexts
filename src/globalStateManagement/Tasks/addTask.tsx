@@ -1,18 +1,17 @@
 import { Button, HStack } from "@chakra-ui/react";
-import { useContext } from "react";
 
 import { GrPowerReset } from "react-icons/gr";
 import { IoMdAdd } from "react-icons/io";
-import { TaskContext } from "./context/taskContext";
+import useTasks from "./useTasks";
 
 export const AddTaskList = () => {
-  const { tasks, dispatch } = useContext(TaskContext);
+  const { tasks, dispatch } = useTasks();
   return (
     <>
       <HStack gap={4} padding={5}>
         <Button
           borderRadius={5}
-          colorPalette={"gray"}
+          colorPalette={"yellow"}
           variant="subtle"
           onClick={() =>
             dispatch({
@@ -29,7 +28,7 @@ export const AddTaskList = () => {
 
         <Button
           borderRadius={5}
-          colorPalette={"gray"}
+          colorPalette={"yellow"}
           variant="subtle"
           onClick={() =>
             dispatch({

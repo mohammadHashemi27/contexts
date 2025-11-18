@@ -15,9 +15,9 @@ interface ResetTasks {
   type: "RESET";
 }
 
-export type ActionTask = AddTask | DeleteTask | ResetTasks;
+export type ActionTasks = AddTask | DeleteTask | ResetTasks;
 
-export const TaskLists = (tasks: Task[], action: ActionTask): Task[] => {
+export const TaskLists = (tasks: Task[], action: ActionTasks): Task[] => {
   switch (action.type) {
     case "ADD":
       return [action.task, ...tasks];

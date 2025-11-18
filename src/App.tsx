@@ -1,23 +1,20 @@
 import "./App.css";
 
 import { NavBar } from "./globalStateManagement/reducer/NavBar";
-import { AddTaskList } from "./globalStateManagement/addTask";
-
-import { Login } from "./globalStateManagement/reducer/login";
-import { AuthProvider } from "./globalStateManagement/authProvider";
-import { TaskProvider } from "./globalStateManagement/TaskProvider";
+import { AddTaskList } from "./globalStateManagement/Tasks/addTask";
+import { Login } from "./globalStateManagement/Auth/AuthLogin";
+import { TaskProvider } from "./globalStateManagement/Tasks/TaskProvider";
+import { AuthProvider } from "./globalStateManagement/Auth/authProvider";
 
 function App() {
   return (
-    <>
-      <AuthProvider>
-        <TaskProvider>
-          <Login />
-          <NavBar />
-          <AddTaskList />
-        </TaskProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <TaskProvider>
+        <Login />
+        <NavBar />
+        <AddTaskList />
+      </TaskProvider>
+    </AuthProvider>
   );
 }
 
