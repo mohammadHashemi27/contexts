@@ -2,24 +2,21 @@ import { Button, HStack } from "@chakra-ui/react";
 
 import { GrPowerReset } from "react-icons/gr";
 import { IoMdAdd } from "react-icons/io";
-import useTasks from "./useTasks";
+import useTaskStore from "./TaskZus";
 
 export const AddTaskList = () => {
-  const { tasks, dispatch } = useTasks();
+  const { tasks, ADD, DELETE, RESET } = useTaskStore();
   return (
     <>
       <HStack gap={4} padding={5}>
         <Button
           borderRadius={5}
-          colorPalette={"yellow"}
+          colorPalette={"blue"}
           variant="subtle"
           onClick={() =>
-            dispatch({
-              type: "ADD",
-              task: {
-                id: Date.now(),
-                title: "TASK:" + Date.now(),
-              },
+            ADD({
+              id: Date.now(),
+              title: "TASK: " + Date.now(),
             })
           }
         >
@@ -28,13 +25,9 @@ export const AddTaskList = () => {
 
         <Button
           borderRadius={5}
-          colorPalette={"yellow"}
+          colorPalette={"blue"}
           variant="subtle"
-          onClick={() =>
-            dispatch({
-              type: "RESET",
-            })
-          }
+          onClick={() => RESET()}
         >
           <GrPowerReset /> پاک کردن
         </Button>
@@ -51,7 +44,7 @@ export const AddTaskList = () => {
               size={{ base: "xs", sm: "sm" }}
               px={2}
               className="btn btn-outline-danger"
-              onClick={() => dispatch({ type: "DELETE", taskId: task.id })}
+              onClick={() => DELETE(task.id)}
             >
               حذف
             </Button>

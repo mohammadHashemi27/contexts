@@ -17,7 +17,7 @@ export const TodoForm = () => {
     const newTodo: Todo = {
       id: Date.now(),
       title,
-      completed: false,
+    
     };
 
     addTodo.mutate(newTodo);

@@ -1,4 +1,4 @@
-interface Action {
+ export interface Action {
   type: "MIN" | "INCREMENT" | "RESET";
 }
 export const counterReducer = (state: number, action: Action): number => {

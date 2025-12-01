@@ -1,11 +1,24 @@
-import type { Post } from "../components/Posts";
-import { config } from "../services/instance";
+import { config, configUser } from "../services/instance";
 
-export const getPostsList = async () => {
-  const res = await config.get<Post[]>("/posts");
+export interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+}
+
+export const getProduct = async () => {
+  const res = await config.get<Product[]>("/products");
   return res.data;
 };
-export const getPost = async (postId: number) => {
-  const res = await config.get<Post>(`/posts/${postId}`);
+
+interface Users {
+  id: number;
+  username: string;
+}
+export const getUsers = async () => {
+  const res = await configUser.get<Users[]>("/users");
   return res.data;
 };

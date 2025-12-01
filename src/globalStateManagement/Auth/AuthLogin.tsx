@@ -1,7 +1,8 @@
 import { Alert, Button } from "@chakra-ui/react";
-import { useLogins } from "./useLogins";
+
+import useAuthStore from "./AuthZus";
 export const Login = () => {
-  const { user, dispatch } = useLogins();
+  const { user, login, logout } = useAuthStore();
 
   if (user)
     return (
@@ -18,7 +19,7 @@ export const Login = () => {
         <Button
           variant={"plain"}
           colorPalette={"blue"}
-          onClick={() => dispatch({ type: "LOGOUT" })}
+          onClick={() => logout()}
         >
           LOGOUT
         </Button>
@@ -29,7 +30,7 @@ export const Login = () => {
       <Button
         variant={"plain"}
         colorPalette={"blue"}
-        onClick={() => dispatch({ type: "LOGIN", userName: "mohammadHashemi" })}
+        onClick={() => login("MOHAMMAD")}
       >
         LOGIN
       </Button>
