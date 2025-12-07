@@ -11,8 +11,10 @@ import {
   ListItem,
   HStack,
   Box,
+  Text,
 } from "@chakra-ui/react";
-import "../components/swiper.css";
+import { NavLink } from "react-router-dom";
+
 export const ProductionUser = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],
@@ -35,22 +37,59 @@ export const ProductionUser = () => {
     );
 
   return (
-    <Card.Root maxW="sm" borderRadius="lg" boxShadow="md" marginTop={20}>
-      <CardHeader>
-        <Heading size="md" textAlign={"center"}>
-          Store List
-        </Heading>
+    <Card.Root
+      maxW="sm"
+      borderRadius="2xl"
+      boxShadow="lg"
+      marginTop={20}
+      bg="white"
+      color="gray.800"
+      p={4}
+      height="450px"
+    >
+      <CardHeader textAlign="center">
+        <Heading size="md">Store List</Heading>
       </CardHeader>
 
-      <CardBody>
-        <List.Root gap="3">
+      <CardBody overflowY="auto" maxH="350px" pr="2">
+        <List.Root gap="4">
           {data?.map((user) => (
-            <ListItem key={user.id}>
-              <HStack>
-                <img src={user.image} alt="product" width={50} height={50} />
-                <Card.Title className="fs-6 mt-2">{user.category}</Card.Title>
-              </HStack>
-            </ListItem>
+            <NavLink
+              key={user.id}
+              to={`/productionDetails/${user.id}`}
+              style={{ textDecoration: "none", color: "inherit" }} 
+            >
+              <ListItem
+                _hover={{
+                  bg: "gray.100",
+                  borderRadius: "lg",
+                  transition: "0.2s",
+                  cursor: "pointer",
+                }}
+                p="2"
+              >
+                <HStack>
+                  <img
+                    src={user.image}
+                    alt="product"
+                    width={55}
+                    height={55}
+                    style={{
+                      borderRadius: "12px",
+                      objectFit: "cover",
+                    }}
+                  />
+
+                  <Box>
+                    <Text fontWeight="medium">{user.category}</Text>
+
+                    <Text fontSize="sm" color="gray.500">
+                      {user.title?.slice(0, 20)}...
+                    </Text>
+                  </Box>
+                </HStack>
+              </ListItem>
+            </NavLink>
           ))}
         </List.Root>
       </CardBody>

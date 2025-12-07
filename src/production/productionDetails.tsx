@@ -1,62 +1,19 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  Box,
-  Stack,
-  HStack,
-  SkeletonCircle,
-  Skeleton,
-} from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+import { Button, Card, Box, HStack, Badge, Image } from "@chakra-ui/react";
 import { useProductionStore } from "./ProductionZus";
 import { getProduct, type Product } from "../apis/posts";
 import { useQuery } from "@tanstack/react-query";
 
-export interface ProductDetailsProps {
-  product: Product;
-  onClose: () => void;
-}
-
-const ProductDetails = ({ product, onClose }: ProductDetailsProps) => {
+const ProductDetails = () => {
+  const { id } = useParams<{ id: string }>();
   const { login } = useProductionStore();
-  const { isLoading } = useQuery({
-    queryKey: ["Product"],
+
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products"],
     queryFn: getProduct,
   });
 
-  const SkeletonCard = (
-    <Card.Root
-      width="320px"
-      padding="16px"
-      boxShadow="xl"
-      borderRadius="lg"
-      bg="white"
-      maxH="80vh"
-      overflowY="auto"
-    >
-      <Stack gap="4">
-        <HStack>
-          <SkeletonCircle size="12" />
-          <Stack flex="1">
-            <Skeleton height="14px" width="70%" />
-            <Skeleton height="14px" width="50%" />
-          </Stack>
-        </HStack>
-
-        <Skeleton height="230px" borderRadius="md" />
-
-        <Skeleton height="18px" width="80%" />
-        <Skeleton height="18px" width="60%" />
-
-        <HStack justifyContent="space-between" pt="4">
-          <Skeleton height="35px" width="80px" borderRadius="md" />
-          <Skeleton height="35px" width="80px" borderRadius="md" />
-        </HStack>
-      </Stack>
-    </Card.Root>
-  );
-
-  if (isLoading)
+  if (isLoading) {
     return (
       <Box
         position="fixed"
@@ -70,9 +27,13 @@ const ProductDetails = ({ product, onClose }: ProductDetailsProps) => {
         alignItems="center"
         zIndex={1000}
       >
-        {SkeletonCard}
+        <Card.Root width="320px" height="300px" bg="white" borderRadius="lg" />
       </Box>
     );
+  }
+
+  const product = products?.find((p: Product) => String(p.id) === id);
+  if (!product) return <p>Product not found</p>;
 
   return (
     <Box
@@ -81,56 +42,60 @@ const ProductDetails = ({ product, onClose }: ProductDetailsProps) => {
       left={0}
       w="100vw"
       h="100vh"
-      bg="blackAlpha.600"
+      bgImage={`url(${product.image})`} // تصویر محصول در بک‌گراند
+      bgSize="cover"
+      bgRepeat="no-repeat"
+      bgBlendMode="overlay" // کم‌رنگ کردن بک‌گراند
+      bgColor="blackAlpha.600"
       display="flex"
       justifyContent="center"
       alignItems="center"
       zIndex={1000}
+      padding={4}
     >
       <Card.Root
-        width="320px"
-        maxH="80vh"
-        bg="white"
+        flexDirection={{ base: "column", md: "row" }}
+        overflow="hidden"
+        maxW="xl"
+        bg="whiteAlpha.900" // نیمه شفاف برای خوانایی متن
         borderRadius="lg"
         boxShadow="xl"
-        display="flex"
-        flexDirection="column"
       >
-        <Card.Body flex="1" overflowY="auto" padding="16px" gap="3">
-          <Avatar.Root size="2xl" shape="rounded">
-            <Avatar.Image src={product.image} />
-          </Avatar.Root>
+        {/* تصویر محصول داخل کارت */}
+        <Image
+          objectFit="cover"
+          maxW={{ base: "100%", md: "200px" }}
+          src={product.image}
+          alt={product.title}
+        />
 
-          <Card.Title fontSize="lg">{product.title}</Card.Title>
-          <Card.Description fontSize="sm">
-            {product.description}
-          </Card.Description>
+        {/* محتوای کارت */}
+        <Box flex="1" display="flex" flexDirection="column">
+          <Card.Body>
+            <Card.Title mb="2">{product.title}</Card.Title>
+            <Card.Description fontSize="sm" mb="2">
+              {product.description}
+            </Card.Description>
 
-          <p>Price: {product.price}$</p>
-          <p>Category: {product.category}</p>
-        </Card.Body>
+            <HStack gap={2} mt="2">
+              <Badge colorScheme="teal">{product.category}</Badge>
+              <Badge colorScheme="orange">${product.price}</Badge>
+            </HStack>
+          </Card.Body>
 
-        <Card.Footer
-          position="sticky"
-          bottom={0}
-          bg="white"
-          borderTop="1px solid #e2e8f0"
-          justifyContent="space-between"
-          padding="16px"
-          zIndex={10}
-        >
-          <Button variant="outline" onClick={onClose}>
-            Close
-          </Button>
-
-          <Button
-            variant="ghost"
-            colorScheme="gray"
-            onClick={() => login(product)}
-          >
-            Add
-          </Button>
-        </Card.Footer>
+          <Card.Footer mt="auto" display="flex" justifyContent="space-between">
+            <Button variant="outline" onClick={() => window.history.back()}>
+              Close
+            </Button>
+            <Button
+              variant="solid"
+              colorScheme="gray"
+              onClick={() => login(product)}
+            >
+              Add
+            </Button>
+          </Card.Footer>
+        </Box>
       </Card.Root>
     </Box>
   );
